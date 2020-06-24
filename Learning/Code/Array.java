@@ -12,7 +12,7 @@ public class Array{
         int[] ns = { 1, 4, 9, 16, 25 };
         // 倒序打印数组元素:
         for (int i = ns.length -1; i != -1; i--) {
-            System.out.print(ns[i] + ',');
+            System.out.print(ns[i] + " ");
         }
 
         System.out.println();
