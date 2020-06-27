@@ -1,13 +1,11 @@
-class Income {
+abstract class Income {
     protected double income;
 
     public Income(double income){
         this.income = income;
     }
 
-    public double getTax(){
-        return this.income * 0.1;
-    }
+    abstract public double getTax();
 }
 
 class Salary extends Income{
@@ -35,7 +33,7 @@ class RoyaltyIncome extends Income{
 }
 
 public class Polymorphic{
-    /** 优化写法
+    // 优化写法
     public static double getTotalTax(Income... incomes){
         double total = 0;
 
@@ -48,7 +46,6 @@ public class Polymorphic{
     
     public static void main(String[] args){
         Income[] incomes = new Income[]{
-            new Income(2000),
             new Salary(8000),
             new RoyaltyIncome(10000)
         };
@@ -56,8 +53,9 @@ public class Polymorphic{
         System.out.println(getTotalTax(incomes));
 
     }
-    */
 
+
+    /**
     public static double getTotalTax(Income... incomes){
         double total = 0;
 
@@ -78,4 +76,5 @@ public class Polymorphic{
 
         System.out.println(getTotalTax(incomes));
     }
+    */
 }
