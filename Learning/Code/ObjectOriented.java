@@ -52,6 +52,10 @@ class City{
  class People{
     protected String name;
     protected int age;
+    private static int count;
+    public static void getCount(){
+        System.out.println(count)
+    }
 
     public People(){
         this("Lihua",18);
@@ -66,6 +70,7 @@ class City{
     }
 
     public People(String name, int age){
+        count++;
         this.name = name;
         this.age = age;
     }
