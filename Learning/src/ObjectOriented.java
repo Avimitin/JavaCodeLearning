@@ -54,7 +54,7 @@ class City{
     protected int age;
     private static int count;
     public static void getCount(){
-        System.out.println(count)
+        System.out.println(count);
     }
 
     public People(){
