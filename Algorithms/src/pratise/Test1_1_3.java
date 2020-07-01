@@ -4,8 +4,8 @@ public class Test1_1_3 {
             System.out.println("请输入3个数据");
         }
 
-        if (args[0] == args[1] && args[1] == args[2]){
-            System.out.println("equal");
+        if (args[0].equals(args[1]) && args[1].equals(args[2])){
+            System.out.println("EQUAL");
         } else {
             System.out.println("NOT EQUAL");
         }
