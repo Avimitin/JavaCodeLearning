@@ -15,14 +15,14 @@ public class Test1_1_13 {
             System.out.println();
         }
 
-        // 装置后
+        // 转置后
         String[][] new_array = new String[N][M];
         
         for (int a = 0; a < N; a++){
             for (int b = 0; b < M; b++){
                 String s = "("+a+","+b+")";
                 new_array[a][b] = s;
-                System.out.print(s);
+                System.out.print(new_array[a][b]);
             }
             System.out.println();
         }
