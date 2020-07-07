@@ -2,3 +2,5 @@ mypro1
 test
 .idea
 .vscode
+*/lib
+*/.classpath
