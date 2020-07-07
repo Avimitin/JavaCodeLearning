@@ -1,3 +1,5 @@
+package pratise;
+
 public class Test1_1_20 {
     public static void main(String[] args){
         System.out.print(Math.log(ln(5.0)));

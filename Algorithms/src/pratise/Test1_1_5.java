@@ -1,3 +1,5 @@
+package pratise;
+
 public class Test1_1_5 {
     public static void main(String[] args){
         double x = Double.parseDouble(args[0]);

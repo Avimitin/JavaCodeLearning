@@ -1,3 +1,5 @@
+package pratise;
+
 public class Test1_1_13 {
     public static void main(String[] args){
         int M = Integer.parseInt(args[0]);

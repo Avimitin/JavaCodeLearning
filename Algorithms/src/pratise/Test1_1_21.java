@@ -1,3 +1,5 @@
+package pratise;
+
 import java.util.Scanner;
 
 public class Test1_1_21 {

@@ -1,3 +1,5 @@
+package pratise;
+
 public class Test1_1_15 {
     public static void main(String[] args){
         int[] a = {1, 4, 3, 4, 7, 3, 5, 3, 8};
