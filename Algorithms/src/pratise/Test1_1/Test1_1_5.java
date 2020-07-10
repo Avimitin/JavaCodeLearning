@@ -1,4 +1,4 @@
-package pratise;
+package pratise.Test1_1;
 
 public class Test1_1_5 {
     public static void main(String[] args){

@@ -1,4 +1,4 @@
-package pratise;
+package pratise.Test1_1;
 
 import java.util.Scanner;
 
