@@ -27,6 +27,10 @@ public class Stack<Item> {
         return item;
     }
 
+    public Item peek(){
+        return first.item;
+    }
+
     public int size(){
         return N;
     }
