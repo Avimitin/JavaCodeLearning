@@ -1,5 +1,8 @@
 package pratise.Test1_5;
 
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdIn;
+
 public class UnionFind{
     private int count;
     private int[] id;
@@ -38,5 +41,19 @@ public class UnionFind{
          else if (size[p] > size[q]) { id[q] = id[p]; size[p] += size[q];}
          else if (size[q] > size[p]) { id[p] = id[q]; size[q] += size[p];}
          count --;
+    }
+
+    public static void main(String[] args){
+        UnionFind uf = new UnionFind(10);
+
+        while (StdIn.isEmpty() != true) {
+            int num1 = StdIn.readInt();
+            int num2 = StdIn.readInt();
+            if (uf.connected(num1, num2)) continue;
+            uf.union(num1, num2);
+            StdOut.printf("(%d, %d)", num1, num2);
+        }
+
+        StdOut.printf("%d Component", uf.count());
     }
 }
