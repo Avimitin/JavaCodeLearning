@@ -7,9 +7,10 @@ import edu.princeton.cs.algs4.StdOut;
 public class Percolation {
     private class Bit{
         private int name;
-        private boolean isOpen;
+        private boolean isOpen = false;
+        public Bit(int name){ this.name = name; }
     }
-    private int[] grid;
+    private Bit[] grid;
     private int width;
     private int[] size;
     private int openSitesCount;
@@ -17,9 +18,9 @@ public class Percolation {
     public Percolation(int n){
         width = n;
         int total = n*n;
-        grid = new int[total];
+        grid = new Bit[total];
         
-        for (int i = 0; i < total; i++){ grid[i] = i; }
+        for (int i = 0; i < total; i++){ grid[i] = new Bit(i); }
         for (int i = 0; i < total; i++){ size[i] = 1; }
     }
 
@@ -29,15 +30,19 @@ public class Percolation {
     }
 
     private int findRoot(int point){
-        while(point != grid[point]){
-            point = grid[point];
-            grid[point] = grid[grid[point]];
+        while(point != grid[point].name){
+            point = grid[point].name;
+            grid[point] = grid[grid[point].name];
         }
 
         return point;
     }
 
     public boolean isFull(int row, int col){
+        if ((row < 0 || row > width) || (col < 0 || col > width)){
+            throw new IllegalArgumentException("index out of bound");
+        }
+
         int index = xyTo1D(row, col);
         for (int i = 0; i < width; i++){
             if (findRoot(index) == findRoot(i)) return true;
@@ -50,30 +55,22 @@ public class Percolation {
         if ((row < 0 || row > width) || (col < 0 || col > width)){
             throw new IllegalArgumentException("index out of bound");
         }
-
-        if (isOpen(row, col)) return;
-
-        int randSite = (int) StdRandom.uniform(0, width-1);
+        
         int index = xyTo1D(row, col);
 
-        int root1 = findRoot(randSite);
-        int root2 = findRoot(index);
-
-        if (root1 == root2) return;
-        else if (size[root1] < size[root2]) {
-            grid[root1] = grid[root2];
-            size[root2] += size[root1];
-        } else if (size[root1] >= size[root2]){
-            grid[root2] = grid[root1];
-            size[root1] += size[root2];
-        }
+        if (isOpen(row, col)) return;
+        else grid[index].isOpen = true;
 
         openSitesCount ++;
     }
 
     public boolean isOpen(int row, int col){
+        if ((row < 0 || row > width) || (col < 0 || col > width)){
+            throw new IllegalArgumentException("index out of bound");
+        }
+        
         int index = xyTo1D(row, col);
-        return findRoot(index) != index;
+        return grid[index].isOpen;
     }
 
     public int numberOfOpenSites(){ return openSitesCount; }
@@ -81,8 +78,8 @@ public class Percolation {
     public boolean percolates(){
         for (int i=0; i <= width; i++){
             for (int j = grid.length -1; j >= grid.length-1-width; j --){
-                int root1 = findRoot(grid[i]);
-                int root2 = findRoot(grid[j]);
+                int root1 = findRoot(grid[i].name);
+                int root2 = findRoot(grid[j].name);
 
                 if (root1 == root2) return true;
             }
