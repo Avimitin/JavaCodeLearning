@@ -7,10 +7,10 @@ import java.util.Iterator;
 
 
 public class Stack<Item> implements Iterable<Item>{
-    private int N;
-    private Node first;
+    protected int N;
+    protected Node first;
 
-    private class Node{
+    protected class Node{
         Item item;
         Node next;
     }
