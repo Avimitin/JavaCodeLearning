@@ -18,6 +18,7 @@ public class RandomizedQueue<Item> implements Iterable<Item>{
     public int size(){ return amount; }
 
     public void enqueue(Item item){
+        if (item == null) throw new IllegalArgumentException();
         if (amount >= array.length/2){
             Item[] newArray = (Item[])new Object[array.length*2];
             for (int i = 0; i < array.length; i++){
