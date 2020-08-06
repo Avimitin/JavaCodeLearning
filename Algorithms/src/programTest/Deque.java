@@ -1,5 +1,3 @@
-package programTest;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -22,6 +20,7 @@ public class Deque<Item> implements Iterable<Item>{
     }
 
     public int size() { return N; }
+    public boolean isEmpty() { return N==0;}
 
     public void addFirst(Item item){
         if (item == null) throw new IllegalArgumentException("NULL IS INVALID!");
