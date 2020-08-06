@@ -1,20 +1,16 @@
 package programTest;
 
 import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdOut;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class RandomizedQueue<Item> {
-    private class Node{
-        Item item;
-        Node next;
-    }
-    private Node first;
-    private Node last;
+public class RandomizedQueue<Item> implements Iterable<Item>{
+    private Item[] array;
     private int amount;
 
-    public RandomizedQueue(){
-        first = new Node();
-        last = new Node();
+    public RandomizedQueue(int n){
+        array = (Item[])new Object[n];
     }
 
     public boolean isEmpty(){ return amount <= 0; }
@@ -22,36 +18,66 @@ public class RandomizedQueue<Item> {
     public int size(){ return amount; }
 
     public void enqueue(Item item){
-        Node oldLast = last;
-        last = new Node();
-        last.item = item;
-        last.next = null;
-        if (isEmpty()) first = last;
-        else oldLast.next = last;
-        amount++;
+        if (amount >= array.length/2){
+            Item[] newArray = (Item[])new Object[array.length*2];
+            for (int i = 0; i < array.length; i++){
+                newArray[i] = array[i];
+            }
+            array = newArray;
+        }
+        array[amount++] = item;
     }
 
     public Item dequeue(){
         if (isEmpty()){ throw new NoSuchElementException(); }
-        else if (amount == 1){
-            Item item = first.item;
-            last = null;
-            first = last;
-            amount --;
-            return item;
+        int ranNum = StdRandom.uniform(array.length);
+        while (array[ranNum] == null){
+            ranNum = StdRandom.uniform(array.length);
         }
-        else{
-            int num = StdRandom.uniform(amount);
-            Node randomNodeFront = first;
-            while (num != 0){
-                randomNodeFront = randomNodeFront.next;
+        Item item = array[ranNum];
+        array[ranNum] = null;
+        amount--;
+        return item;
+    }
+
+    public Item sample(){
+        if (isEmpty()){ throw new NoSuchElementException(); }
+        int ranNum = StdRandom.uniform(array.length);
+        while (array[ranNum] == null){
+            ranNum = StdRandom.uniform(array.length);
+        }
+        return array[ranNum];
+    }
+
+    public Iterator<Item> iterator(){ return new ArrayIterator(); }
+
+    private class ArrayIterator implements Iterator<Item>{
+        public boolean hasNext(){ return amount > 0; }
+
+        public Item next(){
+            if (isEmpty()){ throw new NoSuchElementException(); }
+            int ranNum = StdRandom.uniform(array.length);
+            while (array[ranNum] == null){
+                ranNum = StdRandom.uniform(array.length);
             }
-            Node randomNode = randomNodeFront.next;
-            Item item = randomNode.item;
-            randomNodeFront.next = randomNode.next;
-            randomNode = null;
+            Item item = array[ranNum];
+            array[ranNum] = null;
             amount--;
             return item;
+        }
+
+        public void remove(){throw new UnsupportedOperationException(); }
+    }
+
+    public static void main(String[] args){
+        int[] testArray = {1,2,3,4,5};
+        RandomizedQueue<Integer> r = new RandomizedQueue<>(5);
+        for (int i : testArray){
+            r.enqueue(i);
+        }
+        StdOut.print(r.dequeue());
+        for (int i : r){
+            StdOut.print(i);
         }
     }
 }
