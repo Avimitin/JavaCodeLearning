@@ -1,4 +1,3 @@
-package programTest;
 
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdOut;
@@ -9,8 +8,8 @@ public class RandomizedQueue<Item> implements Iterable<Item>{
     private Item[] array;
     private int amount;
 
-    public RandomizedQueue(int n){
-        array = (Item[])new Object[n];
+    public RandomizedQueue(){
+        array = (Item[])new Object[5];
     }
 
     public boolean isEmpty(){ return amount <= 0; }
@@ -72,7 +71,7 @@ public class RandomizedQueue<Item> implements Iterable<Item>{
 
     public static void main(String[] args){
         int[] testArray = {1,2,3,4,5};
-        RandomizedQueue<Integer> r = new RandomizedQueue<>(5);
+        RandomizedQueue<Integer> r = new RandomizedQueue<>();
         for (int i : testArray){
             r.enqueue(i);
         }
