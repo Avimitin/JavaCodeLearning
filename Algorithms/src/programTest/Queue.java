@@ -1,9 +1,11 @@
 package programTest;
 
+import java.util.Iterator;
+
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 
-public class Queue<Item> {
+public class Queue<Item> implements Iterable<Item>{
     private Node first;
     private Node last;
     private int N;
@@ -35,6 +37,20 @@ public class Queue<Item> {
         if (isEmpty()){ last = null;}
         N--;
         return item;
+    }
+
+    public Iterator<Item> iterator(){ return new QueueIterator();}
+
+    private class QueueIterator implements Iterator<Item>{
+        public boolean hasNext(){ return N>0;}
+        public Item next(){
+            Item item = first.item;
+            first = first.next;
+            if (isEmpty()){ last = null;}
+            N--;
+            return item;
+        }
+        public void remove(){}
     }
 
     public static void main(String[] args){
