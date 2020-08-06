@@ -25,7 +25,7 @@ public class Deque<Item> implements Iterable<Item>{
     public void addFirst(Item item){
         if (item == null) throw new IllegalArgumentException("NULL IS INVALID!");
         Node oldFirst = first;
-        // reclaim new node
+        // redeclaim new node
         first = new Node();
         first.item = item;
         first.next = oldFirst;
