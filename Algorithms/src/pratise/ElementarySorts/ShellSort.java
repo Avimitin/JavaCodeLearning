@@ -5,6 +5,7 @@ import programTest.Stack;
 
 public class ShellSort{
     private Stack<Integer> stack = new Stack<>();
+    private int count;
 
     public boolean less(Comparable x, Comparable y){
         return x.compareTo(y) < 0;
@@ -30,8 +31,11 @@ public class ShellSort{
         while (h >= 1){
             for (int i = h; i < len; i++){
                 // 把 j 起始值设置在最末端i，每次 -h 往前比对直到达到最小的间隔角标 h
-                for (int j = i; j >= h && less(a[j], a[j-h]); j-=h){
-                    exchange(a, j, j-h);
+                for (int j = i; j >= h; j-=h){
+                    count++;
+                    if (less(a[j], a[j-h])){
+                        exchange(a, j, j-h);
+                    }
                 }
             }
             h/=3;
