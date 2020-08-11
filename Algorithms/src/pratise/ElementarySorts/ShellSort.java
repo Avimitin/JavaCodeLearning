@@ -2,10 +2,13 @@ package pratise.ElementarySorts;
 
 import edu.princeton.cs.algs4.StdOut;
 import programTest.Stack;
+import edu.princeton.cs.algs4.StdRandom;
+import programTest.StopWatch;
 
 public class ShellSort{
     private Stack<Integer> stack = new Stack<>();
     private int count;
+    private int exchCount;
 
     public boolean less(Comparable x, Comparable y){
         return x.compareTo(y) < 0;
@@ -35,6 +38,7 @@ public class ShellSort{
                     count++;
                     if (less(a[j], a[j-h])){
                         exchange(a, j, j-h);
+                        exchCount++;
                     }
                 }
             }
@@ -64,7 +68,20 @@ public class ShellSort{
 
     public static void main(String[] args){
         ShellSort s = new ShellSort();
-        boolean a = s.less('g', 'c');
-        StdOut.print(a);
+        StopWatch w1 = new StopWatch();
+        for (int i=0; i<30; i++){
+            int N = 1000+100*i;
+            Double[] array = new Double[N];
+            for (int j = 0; j < N; j++){
+                array[j] = StdRandom.uniform()*N;
+            }
+            StopWatch w2 = new StopWatch();
+            s.sort(array);
+            double time = w2.stop();
+            double rate = (s.count / N) * 1.00;
+            StdOut.printf("数组大小为 %d，排序总的比较了 %d 次，比较次数和数组大小的比值为 %.2f;\n数组交换了 %d 次，排序耗时 %.4f 秒。\n\n", N, s.count, rate, s.exchCount,time);
+        }
+        double time = w1.stop();
+        StdOut.printf("程序完成，总耗时 %.4f 秒", time);
     }
 }
