@@ -27,14 +27,17 @@ public class DutchNationalFlag {
 
     public static void main(String[] args){
         DutchNationalFlag d = new DutchNationalFlag(20);
+        // 往数组塞东西
         for (int i = 0; i < d.len; i++){
             d.color(i);
             StdOut.print(d.a[i]);
         }
         StdOut.print("\n");
+        // 初始化三个指针
         int begin = 0;
         int end = d.len -1;
         int current = 0;
+        // 过滤
         while(current <= end){
             switch (d.a[current]){
                 case RED:
