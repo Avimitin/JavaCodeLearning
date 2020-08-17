@@ -7,8 +7,8 @@ public class DutchNationalFlag {
     private static final int RED = 0;
     private static final int WHITE = 1;
     private static final int BLUE = 2;
-    private int[] a;
-    private int len;
+    private final int[] a;
+    private final int len;
 
     public DutchNationalFlag(int N){
         a = new int[N];
@@ -48,7 +48,6 @@ public class DutchNationalFlag {
                     continue;
                 case BLUE:
                     d.swap(current, end--);
-                    continue;
             }
         }
         for (int i = 0; i < d.len; i++){
