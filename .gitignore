@@ -3,4 +3,6 @@ test
 .idea
 .vscode
 */lib
+*/bin
 */.classpath
+*.class
