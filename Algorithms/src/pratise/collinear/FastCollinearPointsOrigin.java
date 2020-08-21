@@ -2,10 +2,10 @@ package pratise.collinear;
 
 import programTest.Queue;
 
-public class FastCollinearPoints {
+public class FastCollinearPointsOrigin {
     private Queue<LineSegment> lineSegmentQueue = new Queue<>();
 
-    public FastCollinearPoints(Point[] points){
+    public FastCollinearPointsOrigin(Point[] points){
         sort(points);
         for (int i = 0; i < points.length-4; i++){
             for (int q1=i+1; q1< points.length; q1++){
