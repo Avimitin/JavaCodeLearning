@@ -1,11 +1,10 @@
 package pratise.collinear;
 
-import javax.swing.text.Segment;
 import java.util.Arrays;
 import java.util.Comparator;
 
 public class FastCollinearPoints {
-    private LineSegment[] segments;
+    private LineSegment[] lineSegments;
 
     public FastCollinearPoints(Point[] points)
     {
@@ -24,7 +23,7 @@ public class FastCollinearPoints {
         // 初始化一个存储两个端点的数组
         int[] hasCollinear = new int[len];
         // 初始化线段
-        segments = new LineSegment[len/4];
+        lineSegments = new LineSegment[len/4];
         // 拷贝数组解耦
         System.arraycopy(points,0, pointsCopy,0, points.length);
 
@@ -89,17 +88,17 @@ public class FastCollinearPoints {
         for (int i = 0; i< hasCollinear.length; i++){
             if (!(hasCollinear[i] == 0)){
                 LineSegment line = new LineSegment(pointsCopy[i], pointsCopy[hasCollinear[i]]);
-                segments[i] = line;
+                lineSegments[i] = line;
             }
         }
 
     }
 
     public int numberOfSegments(){
-        return segments.length;
+        return lineSegments.length;
     }
 
     public LineSegment[] segments(){
-        return segments;
+        return lineSegments;
     }
 }
