@@ -29,15 +29,20 @@ public class Quick {
         // 指定比较值为数组第一个值
         Comparable versus = a[lo];
 
-        
+        // 循环整个数组
         while (true)
         {
+            // 从左边开始往后边找比 versus 更大的值
             while (less(a[++i], versus)) if (i == hi) break;
-            while (less(versus, a[++j])) if (j == lo) break;
+            // 从右边往前找比 versus 小的值
+            while (less(versus, a[--j])) if (j == lo) break;
             if (i > j) break;
+            // 然后交换上面找到的值
             exchange(a, i, j);
         }
 
+        // 最后将比较值和 j 脚标对应值交换，
+        // 此时的 j 是数组相对的中间值
         exchange(a, lo, j);
         return j;
     }
