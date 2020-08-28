@@ -4,7 +4,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class FastCollinearPoints {
-    private LineSegment[] lineSegments;
+    private final LineSegment[] lineSegments;
+    private int num;
 
     public FastCollinearPoints(Point[] points)
     {
@@ -12,59 +13,56 @@ public class FastCollinearPoints {
         // 排序点数组
         Arrays.sort(points);
         // 当存在空节点或者有相同节点时抛出异常
-        for (int i = 0; i< len -1; i++){
-            if (points[i] == null || points[i].compareTo(points[i+1]) == 0) {
-                throw new IllegalArgumentException();
-            }
-        }
+        isLegal(points);
 
         // 创建一个拷贝数组
-        Point[] pointsCopy = new Point[points.length];
+        Point[] pointsCopy = Arrays.copyOf(points, points.length);
         // 初始化一个存储两个端点的数组
         int[] hasCollinear = new int[len];
         // 初始化线段
-        lineSegments = new LineSegment[len/4];
-        // 拷贝数组解耦
-        System.arraycopy(points,0, pointsCopy,0, points.length);
+        lineSegments = new LineSegment[len];
 
         // 遍历数组，因为线段长度为4，遍历至倒数第4个节点即可
         for (int i = 0; i< len-3; i++){
             // 初始化数组存储斜率
             Double[][] slopes = new Double[len][2];
+            int slopesCount = 0;
             // 遍历创建起点 i 到 i 之后的所有点的斜率
             for (int j = i+1; j < len; j++){
                 double slope = pointsCopy[i].slopeTo(pointsCopy[j]);
                 // 斜率的角标就是斜率的斜率所代表的 j 点
                 slopes[j][0] = j*1.0;
                 slopes[j][1] = slope;
-
+                slopesCount ++;
             }
-            Arrays.sort(slopes, new Comparator<Double[]>() {
-                @Override
-                public int compare(Double[] o1, Double[] o2) {
-                    return Double.compare(o1[1], o2[1]);
-                }
-            });
+            Double[][] slopesCp = new Double[slopesCount][2];
+            int a = 0;
+            for (Double[] slope : slopes) {
+                if (slope[0] == null) continue;
+                slopesCp[a++] = slope;
+            }
+
+            Arrays.sort(slopesCp, Comparator.comparingDouble(o -> o[1]));
 
 
             // 创建计数器
             int count = 0;
             // 遍历斜率数组，遇到4个一样的斜率点就存到线段组里
-            for (int k = 0; k < slopes.length-1; k++){
+            for (int k = 0; k < slopesCp.length-1; k++){
                 // 存斜率的数组会有空值需要判断输入
-                if (slopes[k] == null) continue;
+                if (slopesCp[k] == null) continue;
                 // 创建当前斜率变量用于比较
-                double current = slopes[k][1];
+                double current = slopesCp[k][1];
                 int next = k+1;
 
                 // 只要不同就归零计数器
-                if (Double.compare(current, slopes[next][1]) == 0) count++;
+                if (Double.compare(current, slopesCp[next][1]) == 0) count++;
                 else count = 0;
 
                 // 当有4个相同斜率时，判断并加入线段组内
                 if (count == 4) {
                     boolean isExist = false;
-                    int end = slopes[next][0].intValue();
+                    int end = slopesCp[next][0].intValue();
 
                     // 遍历查看当前节点是否已经在数组内
                     for (int x = 0; x < hasCollinear.length; x++){
@@ -77,7 +75,7 @@ public class FastCollinearPoints {
 
                     if (!isExist) {
                         // i是初始点 next是尾节点
-                        hasCollinear[i] = slopes[next][0].intValue();
+                        hasCollinear[i] = slopesCp[next][0].intValue();
                         count = 0;
                     }
                 }
@@ -89,16 +87,42 @@ public class FastCollinearPoints {
             if (!(hasCollinear[i] == 0)){
                 LineSegment line = new LineSegment(pointsCopy[i], pointsCopy[hasCollinear[i]]);
                 lineSegments[i] = line;
+                num++;
             }
         }
 
     }
 
     public int numberOfSegments(){
-        return lineSegments.length;
+        return num;
     }
 
     public LineSegment[] segments(){
-        return lineSegments;
+        return Arrays.copyOf(lineSegments, num);
+    }
+
+    private boolean isDuplicated(Point[] points) {
+        // 要先排序点再使用该方法
+        for (int i = 0; i < points.length - 1; i++) {
+            if (isEqualPoint(points[i], points[i+1])) return true;
+        }
+        return false;
+    }
+
+    private boolean isEqualPoint(Point a, Point b) {
+        return a.compareTo(b) == 0;
+    }
+
+    private boolean isNull(Point[] points) {
+        for (Point point : points) {
+            if (point == null) return true;
+        }
+        return false;
+    }
+
+    private void isLegal(Point[] points) {
+        if (points == null) throw new IllegalArgumentException("ARRAY CANT BE NULL");
+        if (isNull(points)) throw new IllegalArgumentException("POINT CANT BE NULL");
+        if (isDuplicated(points)) throw new IllegalArgumentException("POINT CANT BE DUPLICATED");
     }
 }
