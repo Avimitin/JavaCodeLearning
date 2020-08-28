@@ -12,11 +12,11 @@ public class BruteCollinearPoints {
     private int num = 0;
 
     public BruteCollinearPoints(Point[] points) {
-        if ((points == null) || isDuplicated(points)) throw new IllegalArgumentException();
+        if (points == null) throw new IllegalArgumentException();
 
         // 初始化线段数组
         int len = points.length;
-        lineSegments = new LineSegment[len -3];
+        lineSegments = new LineSegment[len];
         Point[] pointsCopy = new Point[len];
 
         for (int i = 0; i < len; i++) {
@@ -25,6 +25,8 @@ public class BruteCollinearPoints {
         }
 
         Arrays.sort(pointsCopy);
+        if (isDuplicated(pointsCopy)) throw new IllegalArgumentException();
+
         // 从头开始遍历，选择第一个节点与后面三个节点比较，4个4个暴力比较
         for (int i = 0; i < len -3; i++) {
             for (int j = i+1; j < len -2; j++) {
@@ -33,12 +35,12 @@ public class BruteCollinearPoints {
                 for (int k = j+1; k < len -1; k++) {
                     // 当第三个点到第二个点的斜率不等于第二个点到起点的斜率时，
                     // 说明三点不在一条线上，直接跳过。
-                    if (!(isEqual(pointsCopy[k].slopeTo(pointsCopy[j]), slope))) continue;
+                    if (!(isEqual(pointsCopy[j].slopeTo(pointsCopy[k]), slope))) continue;
                     for (int x = k+1; x < len; x++) {
                         // 前面三点已经确定在一条线上了，
                         // 只要终点到第三个点的斜率与起点到第二个点的斜率相等
                         // 则说明4点同线，把起点到终点的线段 lineSegment 存到数组里
-                        if (isEqual(pointsCopy[x].slopeTo(pointsCopy[k]), slope)) {
+                        if (isEqual(pointsCopy[k].slopeTo(pointsCopy[x]), slope)) {
                             lineSegments[num++] = new LineSegment(pointsCopy[i], pointsCopy[x]);
                         }
                     }
@@ -52,14 +54,15 @@ public class BruteCollinearPoints {
     }
 
     public LineSegment[] segments() {
-        LineSegment[] segmentsCopy = new LineSegment[lineSegments.length];
-        for (int i = 0; i < lineSegments.length; i++) segmentsCopy[i] = lineSegments[i];
+        // 重新创建一个数组来接受 LineSegments 中的所有线段，就不会出现 null 的情况
+        LineSegment[] segmentsCopy = new LineSegment[num];
+        for (int i = 0; i < num; i++) segmentsCopy[i] = lineSegments[i];
         return segmentsCopy;
     }
 
     private boolean isDuplicated(Point[] points) {
         for (int i = 0; i < points.length - 1; i++) {
-            if (points[i] == points[i+1]) return true;
+            if (points[i].compareTo(points[i+1]) == 0) return true;
         }
         return false;
     }
