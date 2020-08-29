@@ -20,7 +20,7 @@ public class FastCollinearPoints {
         // 创建一个拷贝数组
         Point[] pointsCopy = Arrays.copyOf(points, points.length);
         // 初始化一个存储两个端点的数组
-        int[] hasCollinear = new int[len];
+        int[][] hasCollinear = new int[len][2];
         lineSegments = new LineSegment[len];
 
         // 遍历数组，因为线段长度为4，遍历至倒数第4个节点即可
@@ -30,11 +30,11 @@ public class FastCollinearPoints {
             int slopesCount = 0;
             // 遍历创建起点 i 到 i 之后的所有点的斜率
             for (int j = i+1; j < len; j++) {
-                double slope = pointsCopy[i].slopeTo(pointsCopy[j]);
+                double slope = pointsCopy[j].slopeTo(pointsCopy[i]);
                 // 斜率的角标就是斜率的斜率所代表的 j 点
                 slopes[j][0] = j*1.0;
                 slopes[j][1] = slope;
-                slopesCount ++;
+                slopesCount++;
             }
             Double[][] slopesCp = new Double[slopesCount][2];
             int a = 0;
@@ -45,58 +45,37 @@ public class FastCollinearPoints {
 
             Arrays.sort(slopesCp, Comparator.comparingDouble(o -> o[1]));
 
-            for (Double[] slope : slopesCp){
-                for (Double s : slope){
-                    StdOut.print(s+ " ");
-                }
-                StdOut.println();
-            }
-            StdOut.println();
-
-            // 创建计数器
-            int count = 1;
             // 遍历斜率数组，遇到4个一样的斜率点就存到线段组里
-            for (int k = 0; k < slopesCp.length-1; k++) {
-                // 创建当前斜率变量用于比较
+            for (int k = 0; k < slopesCp.length; k++) {
                 double current = slopesCp[k][1];
-                int next = k+1;
-
-                // 只要不同就归零计数器
-                if (Double.compare(current, slopesCp[next][1]) == 0) count++;
-                else {
-                    count = 0;
-                    continue;
+                int count = 1;
+                int end = 1;
+                for (int j = k+1; j < slopesCp.length; j++){
+                    double next = slopesCp[j][1];
+                    // 只要不同就归零计数器
+                    if (Double.compare(current, next) == 0) {
+                        count++;
+                        end = slopesCp[j][0].intValue();
+                    }
+                    else {
+                        k = j-1;
+                        break;
+                    }
                 }
-
                 // 当有4个相同斜率时，判断并加入线段组内
                 if (count >= 4) {
-                    boolean isExist = false;
-                    int end = slopesCp[next][0].intValue();
-
-                    // 遍历查看当前节点是否已经在数组内
-                    for (int x = 0; x < hasCollinear.length; x++) {
-                        if ((x <= i && i <= hasCollinear[x]) && (end > hasCollinear[x])) {
-                            hasCollinear[x] = end;
-                        } else if (x <= i && i <= hasCollinear[x]) {
-                            isExist = true;
-                        }
-                    }
-
-                    if (!isExist) {
-                        // i是初始点 next是尾节点
-                        hasCollinear[i] = slopesCp[next][0].intValue();
-                        count = 0;
-                    }
+                    // i是初始点 next是尾节点
+                    hasCollinear[num][0] = i;
+                    hasCollinear[num++][1] = end;
                 }
             }
         }
 
         // 遍历结束，将所有的端点连线存入线段数组
         for (int i = 0; i < hasCollinear.length; i++) {
-            if (!(hasCollinear[i] == 0)) {
-                LineSegment line = new LineSegment(pointsCopy[i], pointsCopy[hasCollinear[i]]);
+            if (hasCollinear[i][1] != 0) {
+                LineSegment line = new LineSegment(pointsCopy[hasCollinear[i][0]], pointsCopy[hasCollinear[i][1]]);
                 lineSegments[i] = line;
-                num++;
             }
         }
 
